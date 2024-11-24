@@ -12,11 +12,12 @@ device = (
     else "cpu"
 )
 
-def get_data(N):
-   return torch.rand(N, 3)
+def get_data():
+    # return torch.rand(N, 3)
+    return torch.tensor(np.load("d61.npy")).float()
 
-def main(CONDENSE_FACTOR=0.5, NUM_NEIGHBORS=5, NUM_POINTS=1000):
-   data = get_data(NUM_POINTS).to("cpu")  # KMeans must be on CPU
+def main(CONDENSE_FACTOR=0.5, NUM_NEIGHBORS=5):
+   data = get_data()
 
    # Cluster data
    data = KMeans(n_clusters=int(len(data) * CONDENSE_FACTOR)).fit(data.numpy()).cluster_centers_
@@ -98,4 +99,7 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
+    # test()
+    start_time = time.time()
+    main(CONDENSE_FACTOR=0.9)
+    print((time.time() - start_time))
